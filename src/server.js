@@ -1,18 +1,18 @@
-require('dotenv').config();
+require("dotenv").config();
 
-const Hapi = require('@hapi/hapi');
+const Hapi = require("@hapi/hapi");
 
 // req from albums
-const albums = require('./api/albums');
-const AlbumsService = require('./service/postgres/AlbumsService');
-const AlbumsValidator = require('./validator/albums');
+const albums = require("./api/albums");
+const AlbumsService = require("./service/postgres/AlbumsService");
+const AlbumsValidator = require("./validator/albums");
 
 // req from songs
-const songs = require('./api/songs');
-const SongsService = require('./service/postgres/SongsService');
-const SongsValidator = require('./validator/songs');
+const songs = require("./api/songs");
+const SongsService = require("./service/postgres/SongsService");
+const SongsValidator = require("./validator/songs");
 
-const ClientError = require('./exceptions/ClientError');
+const ClientError = require("./exceptions/ClientError");
 
 const init = async () => {
   const albumsService = new AlbumsService();
@@ -23,7 +23,7 @@ const init = async () => {
     host: process.env.HOST,
     routes: {
       cors: {
-        origin: ['*'],
+        origin: ["*"],
       },
     },
   });
@@ -45,7 +45,7 @@ const init = async () => {
     },
   });
 
-  server.ext('onPreResponse', (request, h) => {
+  server.ext("onPreResponse", (request, h) => {
     // get response from request
     const { response } = request;
 
@@ -53,7 +53,7 @@ const init = async () => {
       // handling client error internally
       if (response instanceof ClientError) {
         const newResponse = h.response({
-          status: 'fail',
+          status: "fail",
           message: response.message,
         });
         newResponse.code(response.statusCode);
@@ -67,8 +67,8 @@ const init = async () => {
 
       // handling server error
       const newResponse = h.response({
-        status: 'error',
-        message: 'terjadi kegagalan pada server kami',
+        status: "error",
+        message: "terjadi kegagalan pada server kami",
       });
       newResponse.code(500);
       return newResponse;
