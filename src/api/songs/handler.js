@@ -1,15 +1,10 @@
-const { mapDBToSongs } = require("../../utils");
+const autoBind = require("auto-bind");
 
 class SongsHandler {
   constructor(service, validator) {
     this._service = service;
     this._validator = validator;
-
-    this.postSongHandler = this.postSongHandler.bind(this);
-    this.getSongsHandler = this.getSongsHandler.bind(this);
-    this.getSongByIdHandler = this.getSongByIdHandler.bind(this);
-    this.putSongByIdHandler = this.putSongByIdHandler.bind(this);
-    this.deleteSongByIdHandler = this.deleteSongByIdHandler.bind(this);
+    autoBind(this);
   }
 
   // post a new song
@@ -43,24 +38,24 @@ class SongsHandler {
       performer,
     }));
 
-    return {
+    return h.response({
       status: "success",
       data: {
         songs,
       },
-    };
+    });
   }
 
   // search song by id
   async getSongByIdHandler(request, h) {
     const { id } = request.params;
     const song = await this._service.getSongById(id);
-    return {
+    return h.response({
       status: "success",
       data: {
         song,
       },
-    };
+    });
   }
 
   // edit song based on id
@@ -70,10 +65,10 @@ class SongsHandler {
 
     await this._service.editSongById(id, request.payload);
 
-    return {
+    return h.response({
       status: "success",
       message: "Lagu berhasil diperbarui",
-    };
+    });
   }
 
   async deleteSongByIdHandler(request, h) {
@@ -81,10 +76,10 @@ class SongsHandler {
 
     await this._service.deleteSongById(id);
 
-    return {
+    return h.response({
       status: "success",
       message: "Lagu berhasil dihapus",
-    };
+    });
   }
 }
 

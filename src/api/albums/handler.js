@@ -1,13 +1,10 @@
+const autoBind = require("auto-bind");
+
 class AlbumsHandler {
   constructor(service, validator) {
     this._service = service;
     this._validator = validator;
-
-    this.postAlbumHandler = this.postAlbumHandler.bind(this);
-    this.getAlbumsHandler = this.getAlbumsHandler.bind(this);
-    this.getAlbumByIdHandler = this.getAlbumByIdHandler.bind(this);
-    this.putAlbumByIdHandler = this.putAlbumByIdHandler.bind(this);
-    this.deleteAlbumByIdHandler = this.deleteAlbumByIdHandler.bind(this);
+    autoBind(this);
   }
 
   async postAlbumHandler(request, h) {
@@ -28,7 +25,7 @@ class AlbumsHandler {
     return response;
   }
 
-  // get all albums return in the dashboard
+  // get all albums
   async getAlbumsHandler() {
     const albums = await this._service.getAlbums();
     return {
@@ -43,12 +40,12 @@ class AlbumsHandler {
   async getAlbumByIdHandler(request, h) {
     const { id } = request.params;
     const album = await this._service.getAlbumById(id);
-    return {
+    return h.response({
       status: "success",
       data: {
         album,
       },
-    };
+    });
   }
 
   // edit album based on id
@@ -58,10 +55,10 @@ class AlbumsHandler {
 
     await this._service.editAlbumById(id, request.payload);
 
-    return {
+    return h.response({
       status: "success",
       message: "Album berhasil diperbarui",
-    };
+    });
   }
 
   async deleteAlbumByIdHandler(request, h) {
@@ -69,10 +66,10 @@ class AlbumsHandler {
 
     await this._service.deleteAlbumById(id);
 
-    return {
+    return h.response({
       status: "success",
       message: "Album berhasil dihapus",
-    };
+    });
   }
 }
 

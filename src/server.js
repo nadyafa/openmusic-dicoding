@@ -49,13 +49,28 @@ const init = async () => {
     // get response from request
     const { response } = request;
 
-    // handling client error internally
-    if (response instanceof ClientError) {
+    if (response instanceof Error) {
+      // handling client error internally
+      if (response instanceof ClientError) {
+        const newResponse = h.response({
+          status: "fail",
+          message: response.message,
+        });
+        newResponse.code(response.statusCode);
+        return newResponse;
+      }
+
+      // handling client error by hapi
+      if (!response.isServer) {
+        return h.continue;
+      }
+
+      // handling server error
       const newResponse = h.response({
-        status: "fail",
-        message: response.message,
+        status: "error",
+        message: "terjadi kegagalan pada server kami",
       });
-      newResponse.code(response.statusCode);
+      newResponse.code(500);
       return newResponse;
     }
 
