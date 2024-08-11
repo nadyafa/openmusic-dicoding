@@ -12,22 +12,27 @@ class SongsHandler {
 
   // post a new song
   async postSongHandler(request, h) {
-    this._validator.validateSongPayload(request.payload);
-    // input a song
-    const { title, year, performer, genre, duration, album_id } = request.payload;
+    try {
+      this._validator.validateSongPayload(request.payload);
+      // input a song
+      const { title, year, performer, genre, duration, albumId } = request.payload;
 
-    // create songId
-    const songId = await this._service.addSong({ title, year, performer, genre, duration, album_id });
+      // create songId
+      const songId = await this._service.addSong({ title, year, performer, genre, duration, albumId });
 
-    const response = h.response({
-      status: "success",
-      message: "Lagu berhasil ditambahkan",
-      data: {
-        songId,
-      },
-    });
-    response.code(201);
-    return response;
+      const response = h.response({
+        status: "success",
+        message: "Lagu berhasil ditambahkan",
+        data: {
+          songId,
+        },
+      });
+      response.code(201);
+      return response;
+    } catch (error) {
+      console.error("Error handling request: ", error);
+      throw error;
+    }
   }
 
   // get all songs return in the dashboard
