@@ -1,4 +1,4 @@
-const autoBind = require("auto-bind");
+const autoBind = require('auto-bind');
 
 class AlbumsHandler {
   constructor(service, validator) {
@@ -15,8 +15,8 @@ class AlbumsHandler {
     const albumId = await this._service.addAlbum({ name, year });
 
     const response = h.response({
-      status: "success",
-      message: "Album berhasil ditambahkan",
+      status: 'success',
+      message: 'Album berhasil ditambahkan',
       data: {
         albumId,
       },
@@ -29,7 +29,7 @@ class AlbumsHandler {
   async getAlbumsHandler() {
     const albums = await this._service.getAlbums();
     return {
-      status: "success",
+      status: 'success',
       data: {
         albums,
       },
@@ -41,7 +41,7 @@ class AlbumsHandler {
     const { id } = request.params;
     const album = await this._service.getAlbumById(id);
     return h.response({
-      status: "success",
+      status: 'success',
       data: {
         album,
       },
@@ -56,8 +56,8 @@ class AlbumsHandler {
     await this._service.editAlbumById(id, request.payload);
 
     return h.response({
-      status: "success",
-      message: "Album berhasil diperbarui",
+      status: 'success',
+      message: 'Album berhasil diperbarui',
     });
   }
 
@@ -67,8 +67,8 @@ class AlbumsHandler {
     await this._service.deleteAlbumById(id);
 
     return h.response({
-      status: "success",
-      message: "Album berhasil dihapus",
+      status: 'success',
+      message: 'Album berhasil dihapus',
     });
   }
 }

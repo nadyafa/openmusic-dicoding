@@ -4,7 +4,9 @@ const mapDBToAlbums = ({ id, name, year }) => ({
   year,
 });
 
-const mapDBToSongs = ({ id, title, year, performer, genre, duration, albumId }) => ({
+const mapDBToSongs = ({
+  id, title, year, performer, genre, duration, albumId,
+}) => ({
   id,
   title,
   year,
