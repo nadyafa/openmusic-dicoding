@@ -32,7 +32,7 @@ class SongsHandler {
     return response;
   }
 
-  // get all songs return in the dashboard
+  // get all songs and filter by title & performer feature
   async getSongsHandler(request, h) {
     const { title, performer } = request.query;
     const getSongs = await this._service.getSongs({ title, performer });

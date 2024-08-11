@@ -27,7 +27,7 @@ class SongsService {
     return result.rows[0].id;
   }
 
-  // diplay all songs in the dasboard
+  // get all songs and filter by title & performer feature
   async getSongs({ title, performer } = {}) {
     const query = {
       text: "SELECT id, title, performer FROM songs WHERE 1=1",
