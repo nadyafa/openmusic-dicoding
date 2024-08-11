@@ -19,8 +19,6 @@ class SongsService {
       values: [id, title, year, performer, genre, duration, albumId],
     };
 
-    console.log("Query: ", query); // Log query input for debugging (delete later)
-
     const result = await this._pool.query(query);
 
     if (!result.rows[0].id) {
@@ -30,8 +28,26 @@ class SongsService {
   }
 
   // diplay all songs in the dasboard
-  async getSongs() {
-    const result = await this._pool.query("SELECT * FROM songs");
+  async getSongs({ title, performer } = {}) {
+    const query = {
+      text: "SELECT id, title, performer FROM songs WHERE 1=1",
+      values: [],
+    };
+
+    let paramIndex = 1;
+
+    if (title) {
+      query.text += ` AND LOWER(title) LIKE $${paramIndex}`;
+      query.values.push(`%${title.toLowerCase()}%`);
+      paramIndex += 1;
+    }
+
+    if (performer) {
+      query.text += ` AND LOWER(performer) LIKE $${paramIndex}`;
+      query.values.push(`%${performer.toLowerCase()}%`);
+    }
+
+    const result = await this._pool.query(query);
     return result.rows.map(mapDBToSongs);
   }
 

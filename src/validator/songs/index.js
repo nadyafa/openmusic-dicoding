@@ -6,7 +6,6 @@ const SongsValidator = {
     const validationResult = SongPayloadSchema.validate(payload);
 
     if (validationResult.error) {
-      console.error("Validation Error: ", validationResult.error.details); //checking detail error for debugging (delete later)
       throw new InvariantError(validationResult.error.message);
     }
   },
