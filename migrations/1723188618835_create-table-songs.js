@@ -1,8 +1,7 @@
-/**
- * @param pgm {import('node-pg-migrate').MigrationBuilder}
- * @param run {() => void | undefined}
- * @returns {Promise<void> | void}
- */
+/* eslint-disable camelcase */
+
+exports.shorthands = undefined;
+
 exports.up = (pgm) => {
   pgm.createTable("songs", {
     id: {
@@ -32,14 +31,13 @@ exports.up = (pgm) => {
       type: "VARCHAR(50)",
     },
   });
-  pgm.addConstraint("songs", "fk_songs_albums", 'FOREIGN KEY("albumId") REFERENCES albums(id) ON DELETE CASCADE');
+  pgm.addConstraint(
+    "songs",
+    "fk_albums.albumId_albums.id",
+    'FOREIGN KEY("albumId") REFERENCES albums(id) ON DELETE CASCADE'
+  );
 };
 
-/**
- * @param pgm {import('node-pg-migrate').MigrationBuilder}
- * @param run {() => void | undefined}
- * @returns {Promise<void> | void}
- */
 exports.down = (pgm) => {
   pgm.dropTable("songs");
 };

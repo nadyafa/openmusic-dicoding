@@ -4,9 +4,7 @@ const mapDBToAlbums = ({ id, name, year }) => ({
   year,
 });
 
-const mapDBToSongs = ({
-  id, title, year, performer, genre, duration, albumId,
-}) => ({
+const mapDBToSongs = ({ id, title, year, performer, genre, duration, albumId }) => ({
   id,
   title,
   year,
@@ -16,4 +14,10 @@ const mapDBToSongs = ({
   albumId,
 });
 
-module.exports = { mapDBToAlbums, mapDBToSongs };
+const mapDBToPlaylist = ({ id, name, username }) => ({
+  id,
+  name,
+  username,
+});
+
+module.exports = { mapDBToAlbums, mapDBToSongs, mapDBToPlaylist };

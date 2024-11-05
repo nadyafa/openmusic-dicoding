@@ -3,7 +3,7 @@
 exports.shorthands = undefined;
 
 exports.up = (pgm) => {
-  pgm.createTable("albums", {
+  pgm.createTable("playlists", {
     id: {
       type: "VARCHAR(50)",
       primaryKey: true,
@@ -12,13 +12,17 @@ exports.up = (pgm) => {
       type: "TEXT",
       notNull: true,
     },
-    year: {
-      type: "INT",
-      notNull: true,
+    owner: {
+      type: "VARCHAR(50)",
     },
   });
+  pgm.addConstraint(
+    "playlists",
+    "fk_playlist.owner_users.id",
+    "FOREIGN KEY(owner) REFERENCES users(id) ON DELETE CASCADE"
+  );
 };
 
 exports.down = (pgm) => {
-  pgm.dropTable("albums");
+  pgm.dropTable("playlists");
 };
